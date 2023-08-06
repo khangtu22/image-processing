@@ -12,11 +12,21 @@ cd front-end/image-processing
 npm install
 ```
 
+To run test:
+```agsl
+npn run test
+```
+
+To run linting:
+```agsl
+npm run lint
+```
+
 Then, you can run the backend API:
 
 ```bash 
 cd back-end
-npm run start1
+npm run start:prod
 ```
 
 This will run the Node server on port 3000.

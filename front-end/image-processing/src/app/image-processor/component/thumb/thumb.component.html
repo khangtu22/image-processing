@@ -1,0 +1,20 @@
+<div class="justify-content-center image-listing">
+    <div class="container text-center mt-5">
+        <div class="row">
+            <div class="col-md-4" *ngFor="let imageUrl of imageUrls?.images"  [class.selected]="isSelected(imageUrl.id)">
+                <div class="card mb-4 shadow-sm" style="cursor: pointer;">
+                    <div class="card-body" (click)="handleImageSelectionOnCardClick(imageUrl)">
+                        <ul class="list-unstyled">
+                            <li><strong>URL:</strong> {{imageUrl.url}}</li>
+                            <li><strong>Height:</strong> {{imageUrl.height}}</li>
+                            <li><strong>Width:</strong> {{imageUrl.width}}</li>
+                            <li><strong>Size:</strong> {{imageUrl.sizeInBytes}} bytes</li>
+                        </ul>
+                        <!-- You can add any additional content or information here -->
+                        <p class="card-text">{{errorMessage}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="container mt-5">
+    <form enctype="multipart/form-data">
+        <div class="form-group">
+            <input #imageInput type="file" class="form-control" id="fileInput" name="file"
+                   (change)="createFormData($event)" required>
+        </div>
+        <button (click)="uploadImage($event)" class="btn btn-primary mt-2" [disabled]="!selectedFile">Upload</button>
+    </form>
+</div>

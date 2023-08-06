@@ -1,0 +1,34 @@
+<div class="container text-center mt-5">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let imageUrl of imageUrls?.images">
+      <div class="card mb-4 shadow-sm" style="cursor: pointer;" [class.selected]="isSelected(imageUrl.id)">
+        <div class="card-body" (click)="handleImageSelectionOnCardClick(imageUrl)">
+          <ul class="list-unstyled">
+            <li><strong>URL:</strong> {{imageUrl.url}}</li>
+            <li><strong>Height:</strong> {{imageUrl.height}}</li>
+            <li><strong>Width:</strong> {{imageUrl.width}}</li>
+            <li><strong>Size:</strong> {{imageUrl.sizeInBytes}} bytes</li>
+          </ul>
+          <!-- You can add any additional content or information here -->
+          <p class="card-text">{{errorMessage}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form class="container mt-4" [formGroup]="formGroup">
+    <div class="row justify-content-center">
+      <div class="col-sm-4">
+        <!-- Bind form controls to the input elements using formControlName -->
+        <input class="form-control mb-2" type="number" placeholder="Height (in pixels)" formControlName="height">
+        <input class="form-control mb-2" type="number" placeholder="Width (in pixels)" formControlName="width">
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-sm-4 text-center mt-2">
+        <!-- Bind onSubmit method to the submit button -->
+        <button class="btn btn-primary" [disabled]="formGroup.invalid || selectedImages.length === 0" (click)="onSubmit()">Submit</button>
+      </div>
+    </div>
+  </form>
+
+</div>

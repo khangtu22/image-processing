@@ -39,3 +39,17 @@ Technologies
 Node.js/Express - Backend API
 Angular - Frontend
 ```
+
+### DEMO
+
+- A valid api will look like: 
+```agsl
+http://localhost:3000/api/image?imageId=fjord.jpg&width=200&height=200
+```
+response will be : ```{"message":"ok"}``` to verify please access FE click on card to se image.
+
+![img.png](img.png)
+
+### Basic UI for upload and resize images.
+
+![img_2.png](img_2.png)

@@ -5,15 +5,15 @@ import {
   getAllTransformedImages,
   getImageStockByImageId,
   getImageThumbByImageId,
-  redirectToIfAccessHomePage,
+  showHomePage,
   uploadImage,
 } from "../controllers/image/imageController"
 import { upload } from "../utils/multerConfig"
 
 export default function (app: Application): void {
-  app.use("/api/image", imageRouter)
+  app.use("/api/images", imageRouter)
 
-  app.get("/", redirectToIfAccessHomePage)
+  app.get("/", showHomePage)
 
   app.get("/images", getAllStockImages)
 

@@ -66,6 +66,21 @@ export const getAllStockImages = (req: Request, res: Response): void => {
   })
 }
 
+export const showHomePage = (req: Request, res: Response): void => {
+  res.send(`
+  <div style="font-family: Arial, sans-serif; text-align: center;">
+    <h1 style="color: #333;">Welcome to the Image Processing API</h1>
+    <p style="font-size: 18px;">To use this API, send a query to <code>/api/images</code> with a valid filename.</p>
+    <h2 style="color: #666; margin-top: 40px;">Examples:</h2>
+    <ul style="list-style: none; padding: 0; margin-top: 20px;">
+      <li style="margin-bottom: 10px;">
+        <a href="/api/images?imageId=fjord.jpg&width=120&height=120" style="text-decoration: none; color: #337ab7;">/api/images?imageId=fjord.jpg&width=100&height=100</a>
+      </li>
+    </ul>
+  </div>
+`)
+}
+
 export const uploadImage = (req: Request, res: Response): void => {
   if (!req.file) {
     res.status(400).json({ error: "No file uploaded" })
@@ -109,8 +124,6 @@ export const resizeImage = async (
   const width: number = parseInt(req.query.width as string, 10)
   const height: number = parseInt(req.query.height as string, 10)
   const inputFile: string = req.query.imageId as string
-  const inputFolderPath = SHORT_PATH_TO_STOCK
-  const outputFolderPath = SHORT_PATH_TO_THUMB
 
   // Validate imageId
   if (!inputFile) {
@@ -143,31 +156,36 @@ export const resizeImage = async (
   }
 
   try {
-    const inputFilePath = path.join(inputFolderPath, inputFile)
-    const outputFile = `${inputFile.split(".")[0]}_${width}x${height}.${inputFile.split(".")[1]}`
-    let outputFilePath = path.join(outputFolderPath, outputFile)
-
-    // Check if the input file exists
-    if (!fs.existsSync(inputFilePath)) {
-      res.status(404).json({ message: "Input file not found." })
-      return
-    }
-
-    // Check if the output file exists, if it does, modify the filename to make it unique
-    let counter = 1
-    while (fs.existsSync(outputFilePath)) {
-      const fileNameWithoutExt = `${inputFile.split(".")[0]}_${width}x${height}_${counter}`
-      outputFilePath = path.join(
-        outputFolderPath,
-        `${fileNameWithoutExt}.${inputFile.split(".")[1]}`
-      )
-      counter++
-    }
-
-    await sharp(inputFilePath).resize(width, height).toFile(outputFilePath)
-    res.status(200).json({ message: "ok" })
+    const resizedImageFile = await transform(inputFile, width, height)
+    res.status(200)
+    res.setHeader("Content-Type", "image/jpeg")
+    res.send(resizedImageFile)
     next()
   } catch (err) {
     res.status(500).json({ message: "Error resizing image." })
   }
+}
+
+export const transform = async (
+  inputFile: string,
+  width: number,
+  height: number
+): Promise<Buffer> => {
+  const inputFilePath = path.join(SHORT_PATH_TO_STOCK, inputFile)
+  const outputFile = `${inputFile.split(".")[0]}_${width}x${height}.${inputFile.split(".")[1]}`
+  let outputFilePath = path.join(SHORT_PATH_TO_THUMB, outputFile)
+
+  // Check if the output file exists, if it does, modify the filename to make it unique
+  let counter = 1
+  while (fs.existsSync(outputFilePath)) {
+    const fileNameWithoutExt = `${inputFile.split(".")[0]}_${width}x${height}_${counter}`
+    outputFilePath = path.join(
+      SHORT_PATH_TO_THUMB,
+      `${fileNameWithoutExt}.${inputFile.split(".")[1]}`
+    )
+    counter++
+  }
+
+  await sharp(inputFilePath).resize(width, height).toFile(outputFilePath)
+  return fs.readFileSync(outputFilePath)
 }

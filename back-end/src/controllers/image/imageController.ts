@@ -177,10 +177,8 @@ export const transform = async (
 
   // Check if the output file exists, if it does, return it immediately else resize it.
   if (fs.existsSync(outputFilePath)){
-    console.log("existed");
     return fs.readFileSync(outputFilePath);
   } else {
-    console.log("not");
     await sharp(inputFilePath).resize(width, height).toFile(outputFilePath)
     return fs.readFileSync(outputFilePath)
   }

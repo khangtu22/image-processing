@@ -173,7 +173,7 @@ export const transform = async (
 ): Promise<Buffer> => {
   const inputFilePath = path.join(SHORT_PATH_TO_STOCK, inputFile)
   const outputFile = `${inputFile.split(".")[0]}_${width}x${height}.${inputFile.split(".")[1]}`
-  let outputFilePath = path.join(SHORT_PATH_TO_THUMB, outputFile)
+  const outputFilePath = path.join(SHORT_PATH_TO_THUMB, outputFile)
 
   // Check if the output file exists, if it does, return it immediately else resize it.
   if (fs.existsSync(outputFilePath)){

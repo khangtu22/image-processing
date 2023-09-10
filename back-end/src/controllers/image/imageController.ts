@@ -175,17 +175,13 @@ export const transform = async (
   const outputFile = `${inputFile.split(".")[0]}_${width}x${height}.${inputFile.split(".")[1]}`
   let outputFilePath = path.join(SHORT_PATH_TO_THUMB, outputFile)
 
-  // Check if the output file exists, if it does, modify the filename to make it unique
-  let counter = 1
-  while (fs.existsSync(outputFilePath)) {
-    const fileNameWithoutExt = `${inputFile.split(".")[0]}_${width}x${height}_${counter}`
-    outputFilePath = path.join(
-      SHORT_PATH_TO_THUMB,
-      `${fileNameWithoutExt}.${inputFile.split(".")[1]}`
-    )
-    counter++
+  // Check if the output file exists, if it does, return it immediately else resize it.
+  if (fs.existsSync(outputFilePath)){
+    console.log("existed");
+    return fs.readFileSync(outputFilePath);
+  } else {
+    console.log("not");
+    await sharp(inputFilePath).resize(width, height).toFile(outputFilePath)
+    return fs.readFileSync(outputFilePath)
   }
-
-  await sharp(inputFilePath).resize(width, height).toFile(outputFilePath)
-  return fs.readFileSync(outputFilePath)
 }

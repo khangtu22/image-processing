@@ -69,7 +69,7 @@ export const getAllStockImages = (req: Request, res: Response): void => {
 export const uploadImage = (req: Request, res: Response): void => {
   if (!req.file) {
     res.status(400).json({ error: "No file uploaded" })
-    return;
+    return
   }
 
   const filename = Date.now() + req.file.originalname
@@ -101,7 +101,11 @@ export const redirectToIfAccessHomePage = (req: Request, res: Response): void =>
   res.redirect(redirectUrl.toString())
 }
 
-export const resizeImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const resizeImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const width: number = parseInt(req.query.width as string, 10)
   const height: number = parseInt(req.query.height as string, 10)
   const inputFile: string = req.query.imageId as string
@@ -111,31 +115,31 @@ export const resizeImage = async (req: Request, res: Response, next: NextFunctio
   // Validate imageId
   if (!inputFile) {
     res.status(400).send("Can't proceed without Image ID")
-    return;
+    return
   }
 
   // Validate width
   if (req.query.width && isNaN(width)) {
     res.status(400).send(`Invalid "width" value: ${req.query.width}`)
-    return;
+    return
   }
 
   // Validate height
   if (req.query.height && isNaN(height)) {
     res.status(400).send(`Invalid "height" value: ${req.query.height}`)
-    return;
+    return
   }
 
   // Check for missing width or height
   if ((!req.query.width && req.query.height) || (req.query.width && !req.query.height)) {
     res.status(400).send('Both "width" and "height" must be provided')
-    return;
+    return
   }
 
   // Check if width and height are positive numbers
   if (width <= 0 || height <= 0) {
     res.status(400).send("Width and height must be positive numbers")
-    return;
+    return
   }
 
   try {
@@ -146,7 +150,7 @@ export const resizeImage = async (req: Request, res: Response, next: NextFunctio
     // Check if the input file exists
     if (!fs.existsSync(inputFilePath)) {
       res.status(404).json({ message: "Input file not found." })
-      return;
+      return
     }
 
     // Check if the output file exists, if it does, modify the filename to make it unique

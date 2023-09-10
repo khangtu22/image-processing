@@ -4,23 +4,24 @@ import {
   getAllStockImages,
   getAllTransformedImages,
   getImageStockByImageId,
-  getImageThumbByImageId, redirectToIfAccessHomePage,
-  uploadImage
-} from "../controllers/image/imageController";
-import { upload } from "../utils/multerConfig";
+  getImageThumbByImageId,
+  redirectToIfAccessHomePage,
+  uploadImage,
+} from "../controllers/image/imageController"
+import { upload } from "../utils/multerConfig"
 
 export default function (app: Application): void {
-  app.use("/api/image", imageRouter);
+  app.use("/api/image", imageRouter)
 
-  app.get("/", redirectToIfAccessHomePage);
+  app.get("/", redirectToIfAccessHomePage)
 
-  app.get("/images", getAllStockImages);
+  app.get("/images", getAllStockImages)
 
-  app.get("/transformed-images", getAllTransformedImages);
+  app.get("/transformed-images", getAllTransformedImages)
 
-  app.post("/upload", upload.single("file"), uploadImage);
+  app.post("/upload", upload.single("file"), uploadImage)
 
-  app.get("/image/thumb", getImageThumbByImageId);
+  app.get("/image/thumb", getImageThumbByImageId)
 
-  app.get("/image/stock", getImageStockByImageId);
+  app.get("/image/stock", getImageStockByImageId)
 }

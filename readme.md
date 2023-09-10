@@ -7,14 +7,11 @@ First, install all dependencies:
 ```bash 
 cd back-end
 npm install
-
-cd front-end/image-processing
-npm install
 ```
 
-To run test:
+To run build:
 ```agsl
-npn run test
+npn run build
 ```
 
 To run linting:
@@ -22,11 +19,19 @@ To run linting:
 npm run lint
 ```
 
-Then, you can run the backend API:
+To run prettify:
+```agsl
+npm run prettify
+```
 
+To run test:
+```agsl
+npn run test
+```
+
+To start BE:
 ```bash 
-cd back-end
-npm run start:prod
+npm run start
 ```
 
 This will run the Node server on port 3000.
